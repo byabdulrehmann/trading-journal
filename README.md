@@ -1,4 +1,4 @@
-# Jarvis — Trading Journal
+# Trading Journal
 
 A private, local-first trading journal and performance platform for MetaTrader 5 traders.
 Jarvis gathers every trade into one record (MT5 sync, file import or manual entry), computes
