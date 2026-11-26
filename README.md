@@ -5,6 +5,8 @@ Jarvis gathers every trade into one record (MT5 sync, file import or manual entr
 honest statistics from it, and gives the trader the tools to review, plan and improve:
 analytics, a P&L calendar, playbooks, a notebook, backtesting, trade replay, prop-challenge
 tracking, a market-context scorecard and an AI coach that works only from the trader's own records.
+The coach is free to use: it can run entirely in the browser with no API key, or on the
+trader's own free Gemini or Groq key.
 
 > **The source code is private.** This repository is a showcase: screenshots, features, stack
 > and architecture. A code walkthrough is available on request.
@@ -44,8 +46,9 @@ tracking, a market-context scorecard and an AI coach that works only from the tr
 
 **AI coach**
 - Reflective coaching chat grounded in the trader's own statistics, citing trades as `[#id]`
-- Free model options: a model that runs entirely in the browser (WebGPU), or the account's own
+- Free to use: a model that runs entirely in the browser (WebGPU, no API key), or the trader's own
   free Gemini or Groq key; Anthropic and an offline demo mode are also supported
+- Switch models from inside the chat
 - User-controlled memory and a privacy setting that decides exactly what is shared with a provider
 - Never gives buy or sell instructions and never places trades
 
