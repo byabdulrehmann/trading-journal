@@ -4,7 +4,8 @@ A private, local-first trading journal and performance platform for MetaTrader 5
 Jarvis gathers every trade into one record (MT5 sync, file import or manual entry), computes
 honest statistics from it, and gives the trader the tools to review, plan and improve:
 analytics, a P&L calendar, playbooks, a notebook, backtesting, trade replay, prop-challenge
-tracking, a market-context scorecard and an AI coach that works only from the trader's own records.
+tracking, a market-context scorecard, an economic calendar that fills itself with the week's
+high-impact releases, and an AI coach you can talk to that works only from the trader's own records.
 The coach is free to use: it can run entirely in the browser with no API key, or on the
 trader's own free Gemini or Groq key.
 
@@ -36,16 +37,27 @@ trader's own free Gemini or Groq key.
 - Playbooks with rules, checklists, adherence tracking and missed trades
 - Backtesting sessions on historical broker prices
 - Prop-firm challenge tracking with rule-breach alerts
-- Routines, streaks, goals, spending, economic calendar and periodic reviews
+- Routines, streaks, goals, spending and periodic reviews
 
 **Market context**
 - Per-pair scorecard from public data: CFTC Commitments of Traders positioning, FRED macro
   data (rates, rate trend, growth, unemployment), economic-release surprises, and the pair's
   own seasonality and trend from MT5 daily bars
 - Every factor is shown separately with its source and date; context for a review, not a signal
+- Gold (XAUUSD) leads every table
+
+**Economic calendar**
+- The week's high-impact releases from Forex Factory are added automatically, checked at most once an hour
+- Manual entry and CSV import for anything else; each row shows its source, forecast and previous
+- An optional rule tags trades opened within 15 minutes of a high-impact release for their symbol
 
 **AI coach**
 - Reflective coaching chat grounded in the trader's own statistics, citing trades as `[#id]`
+- Retrieval-augmented answers: the trades, journal days, notebook pages and playbooks that fit each
+  question are found locally (SQLite full-text search plus a small on-device embedding model) and
+  given to the model, scoped to the signed-in user
+- Voice: speak to the coach and have its replies read aloud, using the browser's built-in speech
+  recognition and synthesis
 - Free to use: a model that runs entirely in the browser (WebGPU, no API key), or the trader's own
   free Gemini or Groq key; Anthropic and an offline demo mode are also supported
 - Switch models from inside the chat
@@ -61,7 +73,7 @@ trader's own free Gemini or Groq key.
 | Data | SQLite through Node's built-in `node:sqlite`, versioned migrations |
 | Validation | Zod at every API boundary |
 | Charts | Lightweight Charts, custom SVG charts |
-| AI | Provider interface: WebLLM in the browser, OpenAI-compatible Gemini / Groq, Anthropic SDK |
+| AI | Provider interface: WebLLM in the browser, OpenAI-compatible Gemini / Groq, Anthropic SDK; retrieval with SQLite FTS5 and Transformers.js (all-MiniLM-L6-v2); Web Speech API for voice |
 | Broker | Python service using the `MetaTrader5` package (read-only) |
 | Marketing site | GSAP, Lenis, Motion, Three.js / React Three Fiber |
 | Testing | Node test runner (unit and integration), Playwright (end-to-end) |
@@ -76,7 +88,7 @@ flowchart LR
   B -. in-browser model .-> W[WebLLM / WebGPU]
   N --> M[Read-only MT5 bridge<br/>Python]
   M --> T[Dedicated MT5 terminal]
-  N --> P[Public data<br/>CFTC COT · FRED]
+  N --> P[Public data<br/>CFTC COT · FRED · Forex Factory]
 ```
 
 - **Derived, not stored.** P&L, R and every statistic are computed on read from the raw
